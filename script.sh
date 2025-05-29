@@ -37,6 +37,7 @@ function inregistrare() {
 	id=$((RANDOM + RANDOM))
 	echo "$id,$nume,$email,$hash1" >> ../home/registru.csv
 	mkdir ../home/"$nume"
+	echo "Inregistrarea a fost efectuata cu succes"
 	#echo "Confirmare înregistrare" | mail -s "Înregistrarea a fost efectuată cu succes" "$email"
 }
 
@@ -49,8 +50,8 @@ function logare() {
         read nume
         if  ! grep -q "$nume" ../home/registru.csv; then
                 echo -n "Utilizatorul nu există. Vă rog să vă înregistrați!"
+		echo
 		inregistrare
-		logare
         fi
 
         echo -n "Introduceți parola: "
@@ -66,7 +67,8 @@ function logare() {
                 hash=$(echo -n "$parola" | sha256sum | sed 's/ .*//')
         done
 	echo "Autentificarea a fost efectuată cu succes. Bun venit $nume"
-
+	data=$(date)
+	sed -i "/^[^,]*,$nume,/s/^\([^,]*,[^,]*,[^,]*,[^,]*\).*$/\1,$data/" ../home/registru.csv
 	cd ../home/"$nume"
 	# Mai e de facut ultima logare si array-ul cu utilizatorii care sunt logati in acest moment
         #touch ../home/last_login.csv
