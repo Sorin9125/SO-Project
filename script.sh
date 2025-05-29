@@ -3,6 +3,7 @@
 mkdir ../home
 touch ../home/registru.csv
 chmod 600 ../home/registru.csv
+#logged_in_users=()
 
 function inregistrare() {
 	echo -n "Introduceți numele: "
@@ -43,8 +44,6 @@ function inregistrare() {
 
 
 function logare() {
-        #touch ../home/.deja_logati.csv
-        #chmod 600 ../home/.deja_logati.csv
 
         echo -n "Introduceti numele: "
         read nume
@@ -52,8 +51,16 @@ function logare() {
                 echo -n "Utilizatorul nu există. Vă rog să vă înregistrați!"
 		echo
 		inregistrare
-        fi
-
+		echo -n "Introduceti numele: "
+		read nume
+	fi
+	for i in "${!logged_in_users[@]}"; do
+		if [ "$nume" == "${logged_in_users[i]}" ]; then
+			echo -n "Utilizatorul este deja logat!"
+			echo
+			return 0
+		fi
+	done
         echo -n "Introduceți parola: "
         read -s parola
 	echo
@@ -69,12 +76,29 @@ function logare() {
 	echo "Autentificarea a fost efectuată cu succes. Bun venit $nume"
 	data=$(date)
 	sed -i "/^[^,]*,$nume,/s/^\([^,]*,[^,]*,[^,]*,[^,]*\).*$/\1,$data/" ../home/registru.csv
-	cd ../home/"$nume"
-	# Mai e de facut ultima logare si array-ul cu utilizatorii care sunt logati in acest moment
-        #touch ../home/last_login.csv
-        #chmod 600 ../home/last_login.csv
-
+	#cd ../home/"$nume"
+	logged_in_users+=("$nume")
 }
 
-logare
+function delogare() {
+	echo -n "Cine se deloghează? "
+	read nume
+	while ! grep -q "$nume" ../home/registru.csv
+	do
+		echo -n "Utilizatorul nu exista. Introduceti alt nume: "
+		read nume
+	done
+	for i in "${!logged_in_users[@]}"; do
+		if [ "$nume" == "${logged_in_users[i]}" ]; then
+			unset logged_in_users[i]
+			echo "Utilizatorul a fost delogat cu succes"
+			return 0
+		fi
+	done
+	echo -n "Utilizatorul nu este autentificat"
+	echo
+}
+
+#logare
 #inregistrare
+delogare
