@@ -5,6 +5,7 @@ function autentificare() {
         read nume
         if  ! grep -q ",$nume," ../home/.registru.csv; then
                 echo -n "Utilizatorul nu există. Vă rog să vă înregistrați!"
+		echo
                 return 1
         fi
         for i in "${!logged_in_users[@]}"; do
