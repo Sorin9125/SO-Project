@@ -29,7 +29,7 @@ function autentificare() {
         echo "Autentificarea a fost efectuată cu succes. Bun venit $nume"
         data=$(date)
         sed -i "/^[^,]*,$nume,/s/^\([^,]*,[^,]*,[^,]*,[^,]*\).*$/\1,$data/" ../home/.registru.csv
-        #cd ../home/"$nume"
+        cd ../home/"$nume"
         logged_in_users+=("$nume")
 }
 
