@@ -33,8 +33,12 @@ function inregistrare() {
         id=$((RANDOM + RANDOM))
         echo "$id,$nume,$email,$hash1" >> ../home/.registru.csv
         mkdir ../home/"$nume"
-        echo "Inregistrarea a fost efectuata cu succes"
-        #echo "Confirmare înregistrare" | mail -s "Înregistrarea a fost efectuată cu succes" "$email"
+	cp delogare.sh ../home/"$nume"
+        echo "Înregistrarea a fost efectuată cu succes"
+	cd ../home/"$nume"
+	logged_in_users+=("$nume")
+	echo "Pentru a te deloga te rog să execuți comanda source delogare.sh în directorul tău."
+        echo "Confirmare înregistrare" | mail -s "Înregistrarea a fost efectuată cu succes!" "$email"
 }
 
 inregistrare

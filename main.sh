@@ -1,9 +1,5 @@
 #!/bin/bash
 
-#cd ../
-#cale=$(pwd)
-#echo "$cale"
-
 if [ ! -d ..//home ]; then
 	mkdir ../home
 fi
@@ -15,39 +11,38 @@ function meniu() {
 echo "---Meniu principal---"
 echo "1. Înregistrare"
 echo "2. Autentificare"
-echo "3. Delogare"
-echo "4. Generare raport"
-echo "5. Iesire"
+echo "3. Generare raport"
+echo "4. Iesire"
 echo -n "Ce vrei să faci? (introduceți numărul corespunzător operațiunii) "
-#while true 
-#do
-	read actiune
+read actiune
+while true 
+do
 	case "$actiune" in
 		1)
-			bash inregistrare.sh
+			source inregistrare.sh
+			return 0
 			;;
 		2)
 			source autentificare.sh
 			if [ "$?" != 0 ]; then
-				bash inregistrare.sh
+				source inregistrare.sh
 			fi
-			
+			return 0
 			;;
 		3)
-			source delogare.sh
+			bash generare_raport.sh
+			return 0
 			;;
 		4)
-			bash generare_raport.sh
-			;;
-		5)
 			echo "La revedere"
 			return 0
 			;;
 		*)
-			echo "Nu există operațiunea"
+			echo -n "Nu există operațiunea. Introducți altă comandă! "
+			read actiune
 			;;
 	esac
-#done
+done
 }
 
 meniu

@@ -31,6 +31,7 @@ function autentificare() {
         sed -i "/^[^,]*,$nume,/s/^\([^,]*,[^,]*,[^,]*,[^,]*\).*$/\1,$data/" ../home/.registru.csv
         cd ../home/"$nume"
         logged_in_users+=("$nume")
+	echo "Pentru a te deloga te rog să execuți comanda source delogare.sh în directorul tău."
 }
 
 autentificare
