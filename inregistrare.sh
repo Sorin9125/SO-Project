@@ -41,8 +41,8 @@ function inregistrare() {
 	logged_in_users+=("$nume")
 	echo "Pentru a te deloga te rog să execuți comanda source delogare.sh în directorul tău."
         echo "Confirmare înregistrare" | mail -s "Înregistrarea a fost efectuată cu succes!" "$email"
-	if [ $? != 0 ]; then
-		echo "Mail-ul nu s-a putut trimite"
+	if mailq | grep -B 3 "$email" | grep "No route to host"; then
+		echo "Mail-ul nu s-a putut trimite!"
 	fi
 }
 
