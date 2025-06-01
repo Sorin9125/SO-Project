@@ -31,12 +31,11 @@ function inregistrare() {
                 hash2=$(echo -n "$confirmare_parola" | sha256sum | sed 's/ .*//')
         done
         id=$((RANDOM + RANDOM))
-        echo "$id,$nume,$email,$hash1" >> ../home/.registru.csv
+        data=$(date)
+	echo "$id,$nume,$email,$hash1,$data" >> ../home/.registru.csv
         mkdir ../home/"$nume"
 	cp delogare.sh ../home/"$nume"
         echo "Înregistrarea a fost efectuată cu succes"
-	data=$(date)
-        sed -i "/^[^,]*,$nume,/s/^\([^,]*,[^,]*,[^,]*,[^,]*\).*$/\1,$data/" ../home/.registru.csv
 	cd ../home/"$nume"
 	logged_in_users+=("$nume")
 	echo "Pentru a te deloga te rog să execuți comanda source delogare.sh în directorul tău."
